@@ -16,7 +16,12 @@ const scheduleRoutes = require("./Routers/scheduleRoute")
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace with your frontend URL
+  credentials: true, // This allows cookies and other credentials to be sent in requests
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
+  allowedHeaders: 'Content-Type, Authorization', // Allowed headers
+};
 app.use(cookieParser());
 app.use(bodyParser.json());
 const helmet = require('helmet');
