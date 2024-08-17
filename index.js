@@ -17,7 +17,7 @@ const scheduleRoutes = require("./Routers/scheduleRoute")
 // Middleware
 app.use(express.json());
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your frontend URL
+  origin: '*', // Replace with your frontend URL
   credentials: true, // This allows cookies and other credentials to be sent in requests
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
   allowedHeaders: 'Content-Type, Authorization', // Allowed headers
