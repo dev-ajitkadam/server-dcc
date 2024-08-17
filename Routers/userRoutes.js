@@ -9,24 +9,38 @@ const SECRET_KEY = process.env.JWT_SECRET;
 
 // auth/verify-token
 router.get('/auth/verify-token', (req, res) => {
-    const token = req.headers['authorization'];
+    // Get the token from the Authorization header
+    const authHeader = req.headers['authorization'];
 
-    if (!token) {
+    // Check if the Authorization header is missing
+    if (!authHeader) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
-    const tokenParts = token.split(' ');
+    // Split the token from the 'Bearer <token>' format
+    const tokenParts = authHeader.split(' ');
+    
+    // Check the format of the token
     if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
         return res.status(401).json({ message: 'Invalid token format' });
     }
 
-    const actualToken = tokenParts[1];
+    const token = tokenParts[1];
 
-    jwt.verify(actualToken, SECRET_KEY, (err, decoded) => {
+    // Verify the token
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
         if (err) {
-            return res.status(401).json({ message: 'Failed to authenticate token' });
+            // Handle specific JWT errors for better feedback
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token expired' });
+            } else if (err.name === 'JsonWebTokenError') {
+                return res.status(401).json({ message: 'Invalid token' });
+            } else {
+                return res.status(401).json({ message: 'Failed to authenticate token' });
+            }
         }
 
+        // If token is valid, return the user's role
         res.status(200).json({ role: decoded.role });
     });
 });
@@ -34,44 +48,40 @@ router.get('/auth/verify-token', (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        // Validate the input
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
+
+        // Find the user by email
         const user = await UserModel.findOne({ email });
 
+        // Check if user exists and is active
         if (!user || user.status !== true) {
             return res.status(404).json({ error: 'User not found or inactive' });
         }
 
+        // Validate the password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Incorrect password' });
         }
 
-        // Set token expiration to 7 days
-        const token = jwt.sign(
+        // Generate a JWT token
+        const tokenId = jwt.sign(
             { email: user.email, role: user.role },
             SECRET_KEY,
-            { expiresIn: '7d' } 
+            { expiresIn: '7d' } // Set token expiration to 7 days
         );
 
-        // Set the token in a cookie with a 7-day expiration
-        res.cookie('token', token, { 
-            httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days in milliseconds
-        });
+       
 
-        res.json({ role: user.role, email: user.email, name: user.name });
+        // Send a response with user details
+        res.json({ token:tokenId, role: user.role, email: user.email, name: user.name });
 
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-router.get('/getuser', async (req, res) => {
-    try {
-        const users = await UserModel.find();
-        res.json(users);
-    } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
