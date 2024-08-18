@@ -17,7 +17,7 @@ const scheduleRoutes = require("./Routers/scheduleRoute")
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://dev-ajitkadam.github.io/'],  // Replace with your actual domains
+    origin: ['http://localhost:3000', 'https://dev-ajitkadam.github.io/dcc-frontend/'],  // Replace with your actual domains
     credentials: true,  // Allow cookies and other credentials to be sent
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization'
