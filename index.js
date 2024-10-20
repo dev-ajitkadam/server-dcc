@@ -1,11 +1,9 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const cors = require('cors');
-const twilio = require("twilio");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 require('dotenv').config(); 
-
 const app = express();
 const userRoutes = require('./Routers/userRoutes');
 const projectRoutes = require('./Routers/projectsRoutes');
@@ -13,12 +11,22 @@ const formRoutes = require("./Routers/formRoutes");
 const taskRouter = require("./Routers/tasks");
 const contactRouter = require("./Routers/contactRoutes");
 const scheduleRoutes = require("./Routers/scheduleRoute")
+const path = require('path');
 
 // Middleware
+
+app.use(express.static(path.join(__dirname, 'build')));
+
 app.use(express.json());
 const corsOptions = {
     origin: (origin, callback) => {
-        callback(null, true);  // Allow all origins
+        const allowedOrigins = ['http://localhost:3000', 'https://dccrmc.com'];
+        
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     },
     credentials: true,  // Allow cookies and other credentials to be sent
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -42,10 +50,7 @@ app.use((err, req, res, next) => {
 
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 

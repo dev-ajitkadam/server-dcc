@@ -16,6 +16,10 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     default: 'siteeng'
   },
+  RGN: {
+    type: Number,
+    default: 0
+  },
 });
 
 const ProjectModel = mongoose.model("Project", ProjectSchema);

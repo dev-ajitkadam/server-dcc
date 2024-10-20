@@ -54,6 +54,30 @@ router.post('/addproject',  async (req, res) => {
   }
 });
 
+router.put('/:projectId/AddRGN', async (req, res) => {
+  const { projectId } = req.params;  // Extract projectId from the URL
+  const { RGN } = req.body;          // Extract RGN from the request body
+  const incrementN = RGN + 0
+
+  try {
+    // Use projectId as the query field if it's a field in your MongoDB schema
+    const project = await Project.findOneAndUpdate({ projectId }, { RGN:incrementN}, { new: true });
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    res.json(project, incrementN);  // Return the updated project
+    console.log(project)
+  } catch (error) {
+    
+    res.status(200).json({ message: 'Success' });
+
+  }
+});
+
+
+
 router.get('/getprojects', async (req, res) => {
   try {
       const projects = await ProjectModel.find();

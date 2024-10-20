@@ -46,6 +46,7 @@ const FormSchema = new mongoose.Schema({
     Remark3: String,
     Siteeng: String,
     CompressiveAvgStrength: String,
+    RGN:Number,
     status: {type: Boolean, default:false}
     
 })

@@ -50,6 +50,7 @@ router.post("/addTest", async (req, res) => {
       Remark3,
       Siteeng,
       CompressiveAvgStrength,
+      RGN
     } = req.body;
     await FormModel.create({
       cName,
@@ -96,6 +97,7 @@ router.post("/addTest", async (req, res) => {
       Remark3,
       Siteeng,
       CompressiveAvgStrength,
+      RGN
     });
     res.json({ status: "success" });
   } catch (error) {

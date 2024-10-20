@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8d29eb0e.css",
+    "main.js": "/static/js/main.483196de.js",
+    "static/js/300.b8f89d48.chunk.js": "/static/js/300.b8f89d48.chunk.js",
+    "static/js/952.b86dc0e3.chunk.js": "/static/js/952.b86dc0e3.chunk.js",
+    "static/js/64.c1311bef.chunk.js": "/static/js/64.c1311bef.chunk.js",
+    "static/media/ourService.jpg": "/static/media/ourService.dbd8446c659c74679f60.jpg",
+    "static/media/qualityAdvantages.jpg": "/static/media/qualityAdvantages.30d64987008bc7d4fd40.jpg",
+    "static/media/HeroBg.png": "/static/media/HeroBg.0a1ebd016faf0c9f4314.png",
+    "static/media/quality-work.jpg": "/static/media/quality-work.ad2c8e5f17f725b6b670.jpg",
+    "static/media/consultancy.jpg": "/static/media/consultancy.70ad8ad37984a3413ff9.jpg",
+    "static/media/dcc1.png": "/static/media/dcc1.77fd63ca097e1d397e22.png",
+    "index.html": "/index.html",
+    "main.8d29eb0e.css.map": "/static/css/main.8d29eb0e.css.map",
+    "main.483196de.js.map": "/static/js/main.483196de.js.map",
+    "300.b8f89d48.chunk.js.map": "/static/js/300.b8f89d48.chunk.js.map",
+    "952.b86dc0e3.chunk.js.map": "/static/js/952.b86dc0e3.chunk.js.map",
+    "64.c1311bef.chunk.js.map": "/static/js/64.c1311bef.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8d29eb0e.css",
+    "static/js/main.483196de.js"
+  ]
+}
