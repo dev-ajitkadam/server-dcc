@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require('mongoose');
-const cors = require('cors');
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 require('dotenv').config(); 
@@ -17,17 +16,7 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(express.json());
-const corsOptions = {
-    origin: (origin, callback) => {
-        callback(null, true);  // Allow all origins
-    },
-    credentials: true,  // Allow cookies and other credentials to be sent
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization'
-};
 
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json());
 const helmet = require('helmet');
