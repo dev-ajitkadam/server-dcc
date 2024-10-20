@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require('mongoose');
-
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 require('dotenv').config(); 
@@ -17,7 +16,7 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(express.json());
+
 
 
 app.use(cookieParser());
