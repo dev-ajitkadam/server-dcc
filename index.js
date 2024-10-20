@@ -20,13 +20,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowedOrigins = ['http://localhost:3000', 'https://dccrmc.com'];
-        
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+        callback(null, true);  // Allow all origins
     },
     credentials: true,  // Allow cookies and other credentials to be sent
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
