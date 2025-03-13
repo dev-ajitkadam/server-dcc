@@ -11,13 +11,19 @@ const taskRouter = require("./Routers/tasks");
 const contactRouter = require("./Routers/contactRoutes");
 const scheduleRoutes = require("./Routers/scheduleRoute")
 const path = require('path');
+const cors = require('cors');
 
 // Middleware
 
 app.use(express.static(path.join(__dirname, 'build')));
 
 
-
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true, 
+    methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -50,7 +56,7 @@ app.use("/contact", contactRouter);
 app.use("/schedule", scheduleRoutes);
 
 // Server
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });

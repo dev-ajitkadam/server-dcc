@@ -6,6 +6,7 @@ const FormModel = require("../models/formData");
 router.post("/addTest", async (req, res) => {
   try {
     const {
+      TestId,
       cName,
       cAddress,
       pName,
@@ -53,6 +54,7 @@ router.post("/addTest", async (req, res) => {
       RGN
     } = req.body;
     await FormModel.create({
+      TestId,
       cName,
       cAddress,
       pName,

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const ScheduleModel = require("../models/SheduleForm"); // Correct spelling of "Model"
+const ScheduleModel = require("../models/SheduleForm");
+const { status } = require("init");
 
 // Get all schedules
 router.get("/schedules", async (req, res) => {
@@ -12,12 +13,47 @@ router.get("/schedules", async (req, res) => {
   }
 });
 
-// Add a new schedule
+//Get one shedule
+router.get("/schedules/:Tid", async (req, res) => {
+  try {
+    const { Tid } = req.params
+
+    const schedules = await ScheduleModel.findById(Tid)
+    res.json({ status: "success", data: schedules })
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message })
+  }
+})
+
+router.get("/status/:Tid/:Days", async (req, res) => {
+  try {
+    const { Tid, Days } = req.params;
+
+    const updatedSchedule = await ScheduleModel.findByIdAndUpdate(
+      Tid,
+      { $set: { [Days]: "Completed" } },
+      { new: true }
+    );
+
+    if (!updatedSchedule) {
+      return res.status(404).json({ status: "error", message: "Schedule not found" });
+    }
+
+    res.status(200).json({ status: "success", data: updatedSchedule });
+
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+
+
 // Add a new schedule
 router.post("/addSchedule", async (req, res) => {
   try {
     const {
       pName,
+      t_id,
       cDate,
       B,
       BB,
@@ -29,10 +65,19 @@ router.post("/addSchedule", async (req, res) => {
       Day7,
       Day14,
       Day28,
+      Day7ID,
+      Day14ID,
+      Day28ID,
+      Day7Date,
+      Day14Date,
+      Day28Date,
+      siteEngName,
+      siteEngEmail,
     } = req.body;
 
     const newSchedule = await ScheduleModel.create({
       pName,
+      t_id,
       cDate,
       B,
       BB,
@@ -44,11 +89,19 @@ router.post("/addSchedule", async (req, res) => {
       Day7,
       Day14,
       Day28,
+      Day7ID,
+      Day14ID,
+      Day28ID,
+      Day7Date,
+      Day14Date,
+      Day28Date,
+      siteEngName,
+      siteEngEmail,
     });
 
     res.json({
       status: "success",
-      ...newSchedule.toObject(), 
+      ...newSchedule.toObject(),
     });
   } catch (error) {
     console.error("Error adding schedule:", error);
@@ -85,6 +138,12 @@ router.put("/:id", async (req, res) => {
     Day7,
     Day14,
     Day28,
+    Day7ID,
+    Day14ID,
+    Day28ID,
+    Day7Date,
+    Day14Date,
+    Day28Date,
   } = req.body;
 
   try {
@@ -103,6 +162,12 @@ router.put("/:id", async (req, res) => {
         Day7,
         Day14,
         Day28,
+        Day7ID,
+        Day14ID,
+        Day28ID,
+        Day7Date,
+        Day14Date,
+        Day28Date,
       },
       { new: true }
     );
@@ -111,5 +176,27 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 });
+
+router.patch("/update-fields/:id/:days/:TestId", async (req, res) => {
+  try {
+    const { id, days, TestId } = req.params;
+
+    const updatedSchedule = await ScheduleModel.findByIdAndUpdate(
+      id,
+      { $set: { [days]: TestId } }, // Corrected dynamic field update
+      { new: true }
+    );
+
+    if (!updatedSchedule) {
+      return res.status(404).json({ status: "error", message: "Schedule not found" });
+    }
+
+    res.status(200).json({ status: "success", data: updatedSchedule });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+
 
 module.exports = router;
